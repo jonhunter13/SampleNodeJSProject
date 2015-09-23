@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <title>NodeJS Sample Project</title>
+    <meta name="generator" content="Bootply" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <!--[if lt IE 9]>
+      <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link href="../css/styles.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+  </head>
+  <body>
+ 
+<div class="navbar navbar-default">
+  <div class="container">
+    <ul class="nav navbar-nav">
+      <li><a href="../">Home</a></li>
+      <li><a href="createUser.html">Create User</a></li>
+      <li class="active"><a href="patients.html">Patient List</a></li>
+      <li><a href="doctors.html">Doctor List</a></li>
+    </ul>
+  </div>
+</div>
+
+<div class="container">
+  <h2>Patient's List</h2>
+  <table class="table table-striped" id="patients">
+    <thead>
+      <th>User Name</th><th>First Name</th><th>Last Name</th><th>Email</th><th>Date of Birth</th><th>Gender</th>
+    </thead>
+  </table>
+  
+</div> <!-- /container -->
+  <!-- script references -->
+    <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+    $(function() {
+      $.get('http://localhost:8080/patients', function(data){
+        console.log(data);
+        $.each(data, function (i, item) {
+          var row = $("<tr></tr>");
+          row.append($('<td>').text(item.username));
+          row.append($('<td>').text(item.user_fname));
+          row.append($('<td>').text(item.user_lname));
+          row.append($('<td>').text(item.user_email));
+          row.append($('<td>').text(item.user_dob));
+          row.append($('<td>').text(item.user_gender));
+          $("#patients").append(row);
+        });
+      });
+    });
+    </script>
+    
+  </body>
+</html>

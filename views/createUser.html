@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <title>NodeJS Sample Project - Create User</title>
+    <meta name="generator" content="Bootply" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/parsley.css" rel="stylesheet">
+    <!--[if lt IE 9]>
+      <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link href="../css/styles.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+  </head>
+  <body>
+ 
+<div class="navbar navbar-default">
+  <div class="container">
+    <ul class="nav navbar-nav">
+      <li><a href="../">Home</a></li>
+      <li class="active"><a href="createUser.html">Create User</a></li>
+      <li><a href="patients.html">Patient List</a></li>
+      <li><a href="doctors.html">Doctor List</a></li>
+    </ul>
+  </div>
+</div>
+
+<div class="container">
+  <h2>Create User</h2>
+
+  <div class="alert alert-success hide" id="success"> 
+    <strong>Success!</strong> User Created.  
+  </div>  
+  
+  <form class="form-horizontal" role="form" id="create_user" data-parsley-validate>
+      <div class="row">
+        <div class="col-lg-6">
+        <div class="form-group">
+          <div class="col-sm-offset-2 col-sm-10">
+            <label for="username">User Name:</label>
+            <input type="text" class="form-control" name="username" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-sm-offset-2 col-sm-10">
+            <label for="fname">First Name:</label>
+            <input type="text" class="form-control" name="fname" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-sm-offset-2 col-sm-10">
+            <label for="lname">Last Name:</label>
+            <input type="text" class="form-control" name="lname" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-sm-offset-2 col-sm-10">
+            <label for="email">Email:</label>
+            <input data-parsley-type="email" type="text" class="form-control" name="email" required>
+          </div>
+        </div>
+
+      </div>
+      <div class="col-lg-6">
+        <div class="form-group">
+          <div class="col-sm-offset-2 col-sm-10">
+            <label for="pwd">Password:</label>
+            <input type="password" class="form-control" name="pwd" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-sm-offset-2 col-sm-10">
+            <label for="dob">Date of Birth:</label>
+            <input type="text" class="form-control datepicker" name="dob" id="dob" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-sm-offset-2 col-sm-10">
+            <label for="gender">Gender:</label>
+            <select class="form-control" name="gender" required>
+              <option></option>
+              <option value="Female">Female</option>
+              <option value="Male">Male</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">        
+          <div class="col-sm-offset-2 col-sm-10">
+          <label for="role">Who are you?</label>
+            <div class="radio">
+              <label class="radio-inline"><input data-parsley-multiple="role" type="radio" name="role" value="doctor" required>Doctor</label>
+            </div>
+            <div class="radio">
+              <label class="radio-inline"><input data-parsley-multiple="role" type="radio" name="role" value="patient"  required>Patient</label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="form-group pull-left">        
+          <div class="col-sm-offset-2 col-sm-10">
+            <input type="submit" class="btn btn-primary" />
+          </div>
+        </div>
+      </div>
+      </div>
+      <input class="hide" type="reset" id="resetForm" value="Reset" />
+    </form>
+</div> <!-- /container -->
+  <!-- script references -->
+    <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/parsley.min.js"></script>
+    <script type="text/javascript">
+    $(function() {
+        $('#create_user').parsley();
+
+        $( "#dob" ).datepicker({
+          changeMonth: true,
+          changeYear: true,
+          minDate: new Date(1910,0,1),
+          yearRange: '1910:2015' ,
+        });
+
+        $("#create_user").submit(function(e){
+          e.preventDefault();
+          $.post(
+              'http://localhost:8080/create_user',
+              $(this).serialize(),
+              function(data){
+                $('#success').removeClass('hide');
+                $('#resetForm').click();
+                $('#create_user').parsley().reset();
+                window.setTimeout(function(){
+                  $('#success').addClass('hide')
+                }, 5000);
+              }
+          )
+        });
+    });
+    </script>
+    
+  </body>
+</html>

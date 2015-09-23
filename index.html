@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+		<meta charset="utf-8">
+		<title>NodeJS Sample Project - Home</title>
+		<meta name="generator" content="Bootply" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<link href="css/bootstrap.min.css" rel="stylesheet">
+		<!--[if lt IE 9]>
+			<script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+		<![endif]-->
+		<link href="css/styles.css" rel="stylesheet">
+	</head>
+	<body>
+ 
+<div class="navbar navbar-default">
+  <div class="container">
+    <ul class="nav navbar-nav">
+      <li class="active"><a href="#">Home</a></li>
+      <li><a href="views/createUser.html">Create User</a></li>
+      <li><a href="views/patients.html">Patient List</a></li>
+      <li><a href="views/doctors.html">Doctor List</a></li>
+    </ul>
+  </div>
+</div>
+
+<div class="container">
+  <div class="jumbotron text-center">
+    <h2>Jon Hunter - NodeJS Sample Project</h2>
+    
+    <p><a class="btn btn-large btn-success" href="views/createUser.html">Create User</a>
+    <a class="btn btn-large btn-success" href="views/doctors.html">Doctor List</a>
+    <a class="btn btn-large btn-success" href="views/patients.html">Patient List</a>
+  </div>
+  
+  <hr>
+
+  <div class="row">
+      <p class="lead">Functionality:</p>
+      <ul>
+        <p>Create new patients and doctors</p>
+        <p>Retrieve the schedule of appointments for a given doctor</p>
+        <p>Schedule an appointment for a patient at a given date/time</p>
+        <p>Retrieve a set of doctors from the SQLite Database</p>
+        <p>Retrieve a set of patients from the SQLite Database</p>
+      </ul>
+  </div>
+  <hr>
+  
+</div> <!-- /container -->
+	<!-- script references -->
+		<script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+	</body>
+</html>

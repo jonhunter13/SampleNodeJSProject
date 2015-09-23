@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <title>NodeJS Sample Project - Make Appointment</title>
+    <meta name="generator" content="Bootply" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/parsley.css" rel="stylesheet">
+    <!--[if lt IE 9]>
+      <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link href="../css/styles.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+    <link href='../css/jquery-ui-timepicker-addon.css' rel='stylesheet'>
+  </head>
+  <body>
+ 
+<div class="navbar navbar-default">
+  <div class="container">
+    <ul class="nav navbar-nav">
+      <li><a href="../">Home</a></li>
+      <li><a href="createUser.html">Create User</a></li>
+      <li><a href="patients.html">Patient List</a></li>
+      <li><a href="doctors.html">Doctor List</a></li>
+    </ul>
+  </div>
+</div>
+
+<div class="container">
+  <form class="form-horizontal" role="form" id="app" data-parsley-validate>
+    <h2>Make An Appointment with <span id="this_doc"></span></h2>
+
+    <div class="alert alert-success hide" id="success"> 
+      <strong>Success!</strong> Appointment Made, make another?
+    </div>
+      <div class="row">
+        <div class="col-lg-10">
+          <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+              <label for="patients">Who Are You?</label>
+              <select class="form-control" id="patients" name="patients"required></select>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+              <label for="dob">Date and Time:</label>
+              <input type="text" class="form-control" name="time" id="time" required>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-10">
+          <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+              <label for="note">Notes about your visit:</label><br>
+              <textarea cols="70" rows="5"id="note" name="note" required></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="form-group pull-left">        
+          <div class="col-sm-offset-2 col-sm-10">
+            <input type="submit" class="btn btn-primary" />
+          </div>
+        </div>
+      </div>
+      </div>
+      <input type="hidden" id="doc_id" name="doc_id" />
+      <input class="hide" type="reset" id="resetForm" value="Reset" />
+    </form>
+</div> <!-- /container -->
+  <!-- script references -->
+    <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/parsley.min.js"></script>
+    <script src="../js/jquery-ui-timepicker-addon.js"></script>
+    <script type="text/javascript">
+    $(function() {
+        $('#app').parsley();
+        $( "#time" ).datetimepicker({timeFormat: "hh:mm tt", stepMinute: 10});
+
+        $.get('http://localhost:8080/patients', function(data){
+          $.each(data, function (i, item) {
+            var sel = $("#patients");
+            var option = $('<option></option>').text(item.user_fname + " " + item.user_lname);
+            option.val(item.id);
+            $("#patients").append(option);
+          });
+        });
+
+        var doc_id = getParam("id");
+        if(doc_id>0){
+          $.get('http://localhost:8080/get_user', 
+            {"id":doc_id}, 
+            function(data){
+              console.log(data[0]);
+              $('#this_doc').text(data[0].user_fname + " " + data[0].user_lname);
+            });
+            $('#doc_id').val(doc_id);
+        }else
+          $('#app').html("<p>Unable to make appointment with given information, click on a doctor from the <a href=\"doctors.html\">doctors' list</a> to make an appointment.</p>");
+
+        $("#app").submit(function(e){
+          e.preventDefault();
+          console.log($(this).serialize());
+          $.post(
+              'http://localhost:8080/make_appointment',
+              $(this).serialize(),
+              function(data){
+                $('#success').removeClass('hide');
+                $('#resetForm').click();
+                $('#app').parsley().reset();
+                window.setTimeout(function(){
+                  $('#success').addClass('hide');
+                }, 5000);
+              }
+          )
+        });
+    });
+    
+    function getParam(name){
+       if(name=(new RegExp('[?&]'+encodeURIComponent(name)+'=([^&]*)')).exec(location.search))
+          return decodeURIComponent(name[1]);
+    }
+
+    </script>
+    
+  </body>
+</html>

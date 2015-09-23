@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <title>NodeJS Sample Project</title>
+    <meta name="generator" content="Bootply" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <!--[if lt IE 9]>
+      <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link href="../css/styles.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+  </head>
+  <body>
+ 
+<div class="navbar navbar-default">
+  <div class="container">
+    <ul class="nav navbar-nav">
+      <li><a href="../">Home</a></li>
+      <li><a href="createUser.html">Create User</a></li>
+      <li><a href="patients.html">Patient List</a></li>
+      <li><a href="doctors.html">Doctor List</a></li>
+    </ul>
+  </div>
+</div>
+
+<div class="container">
+  <h2><span id="this_doc"></span> Appointments</h2>
+  <table class="table table-striped" id="apps">
+    <thead>
+      <th>Date</th><th>Patient</th><th>Notes</th>
+    </thead>
+  </table>
+  
+</div> <!-- /container -->
+  <!-- script references -->
+    <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+    $(function() {
+      var id = getParam("id");
+      if(id>0){
+          getUser(id).done(function(data){
+            $('#this_doc').text(data[0].user_fname + " " + data[0].user_lname+"\'s");
+          });
+          $.get('http://localhost:8080/get_schedule',
+              {"id":id},
+             function(data){
+              $.each(data, function (i, item) {
+                getUser(item.app_user_id).done(function(patient){
+                  pat_name = patient[0].user_fname + " " + patient[0].user_lname;
+                  var row = $("<tr></tr>");
+                  row.append($('<td>').text(item.app_date));
+                  row.append($('<td>').text(pat_name));
+                  row.append($('<td>').text(item.app_notes));
+                  $("#apps").append(row);
+                });
+              });
+           });
+      }else
+        $('#container').html("<p>Unable to view appointments with the given information, click on a patient from the <a href=\"patient.html\">patient's list</a> to make an appointment.</p>");
+
+      function getUser(id){
+        return $.get('http://localhost:8080/get_user', {"id":id});
+      }
+
+      function getParam(name){
+         if(name=(new RegExp('[?&]'+encodeURIComponent(name)+'=([^&]*)')).exec(location.search))
+            return decodeURIComponent(name[1]);
+      }
+        
+    });
+    </script>
+    
+  </body>
+</html>
