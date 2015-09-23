@@ -4,14 +4,15 @@
 This is a simple NodeJS Sample project demonstrating my understanding in Front-End Web technologies.
 
 ## Tech Used
-* [NodeJS (https://nodejs.org/en/)]
-* [BootStrap (http://getbootstrap.com/)]
-* [Parsley (http://parsleyjs.org/)]
-* [SQLite3 (https://www.sqlite.org/)]
+* [NodeJS](https://nodejs.org/en/)
+* [Jquery](http://jquery.com/)
+* [SQLite3](https://www.sqlite.org/)
+* [BootStrap](http://getbootstrap.com/)
+* [Parsley](http://parsleyjs.org/) - form validation tool
 
 ## Get Started
 
-After unzipping the file, open a terminal, browse to the folder and run the command below
+After checking out the project open a terminal, browse to the folder and run the command below
 
 ```sh
 node app.js
